@@ -93,13 +93,13 @@ class MinesweeperController
 
   def sweep(x, y)
     @model.sweep(x - 1, y - 1)
+    _refresh_view()
+
     if @model.is_mine(x -1, y - 1)
       @view.print_defeat()
     else
       _check_for_victory()
     end
-   
-    _refresh_view()
   end
 
   def flag(x, y)
@@ -114,6 +114,7 @@ class MinesweeperController
   end
 
   def _refresh_view()
+    system "clear" or system "cls"
     @view.print_board(@model.board)
   end
 end
@@ -365,14 +366,19 @@ class MinesweeperGame
     while true do
       input = gets()
       split = input.split(" ")
-      if split[0] == "s"
-        @controller.sweep(Integer(split[1]), Integer(split[2]))
-      elsif split[0] == "f"
-        @controller.flag(Integer(split[1]), Integer(split[2]))
-      elsif split[0] == "r"
-        @controller.reset(Integer(split[1]), Integer(split[2]), Integer(split[3]))
-      elsif split[0] == "x"
-        return
+
+      begin
+        if split[0] == "s"
+          @controller.sweep(Integer(split[1]), Integer(split[2]))
+        elsif split[0] == "f"
+          @controller.flag(Integer(split[1]), Integer(split[2]))
+        elsif split[0] == "r"
+          @controller.reset(Integer(split[1]), Integer(split[2]), Integer(split[3]))
+        elsif split[0] == "x"
+          return
+        end
+      rescue
+        puts "Something went wrong. Check your previous command."
       end
     end
   end
