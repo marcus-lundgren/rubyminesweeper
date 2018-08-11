@@ -23,16 +23,17 @@ class MinesweeperView
     row_separator = "    " + "----" * col_count + "-"
 
     # Initial row with col number indicator
-    first_row = " " * 4
+    column_numbers = " " * 4
     for c in 1..col_count do
-      first_row += "#{c} ".rjust(4)
+      column_numbers += "#{c} ".rjust(4)
     end
-    puts first_row
+    puts column_numbers
 
     row_counter = 1
     board.each do |row|
       puts row_separator
-      row_s = "#{row_counter} ".rjust(4)
+      line_number  = "#{row_counter} ".rjust(4)
+      row_s = line_number
       row_s += "|"
       row.each do |square|
         row_s += " "
@@ -45,7 +46,7 @@ class MinesweeperView
 
         case square.current_state
         when Square::StateUntouched
-          row_s += "-"
+          row_s += "_"
         when Square::StateSwept
           if square.is_mine
             row_s += "X"
@@ -63,10 +64,12 @@ class MinesweeperView
        
         row_s += " |"
       end
+      row_s += line_number
       puts row_s
       row_counter += 1
     end
     puts row_separator
+    puts column_numbers
   end
 
   def print_defeat()
